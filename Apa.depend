@@ -1,6 +1,7 @@
 # depslib dependency file v1.0
-1561472969 source:c:\users\rodrigo\desktop\apa\main.c
+1561652846 source:c:\users\rodrigo\desktop\apa\main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
+	<sys/time.h>
 

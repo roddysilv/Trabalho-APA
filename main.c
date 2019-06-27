@@ -1,9 +1,75 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/time.h>
 
-#define N 100000
+#define N 100000  ///500000 MAX
 
+/// ESQUEMA DO PROF
+
+int achaPivo(int n1,int n2,int lista[])
+{
+    int esq=n1;
+    int dir=n2;
+    int pos=esq+1;
+    int pto=0;
+    while(1>0)
+    {
+        if(pos>dir)
+        {
+            break;
+        }
+        else if(lista[pos]>=lista[pos-1])
+        {
+            pos=pos+1;
+        }
+        else
+        {
+            pto=pos;
+            break;
+        }
+    }
+    return pto;
+}
+
+int particaoRaul(int n1,int n2,int pivo,int lista[])
+{
+    int esq=n1;
+    int dir=n2;
+    while(esq<=dir)
+    {
+        swap(&lista[esq],&lista[dir]);
+        while(lista[esq]<=pivo)
+        {
+            esq=esq+1;
+            while(lista[dir]>pivo)
+            {
+                dir=dir-1;
+            }
+        }
+    }
+    return dir;
+}
+
+void quicksortRaul(int lista[],int n1,int n2)
+{
+    int esq=n1;
+    int dir=n2;
+    int pto=achaPivo(esq,dir,lista);
+    if(pto!=0)
+    {
+        int p=particaoRaul(esq,dir,pto,lista);
+        quicksortRaul(lista,esq,p);
+        quicksortRaul(lista,p+1,dir);
+    }
+}
+
+void iniciaquick(int lista[],int tam)
+{
+    quicksortRaul(lista,0,tam);
+}
+
+///----------------------------------------------------------
 
 void MedianaDe3(int lista[],int tam)
 {
@@ -215,9 +281,22 @@ void randomize ( int arr[], int n )
     }
 }
 
+double media(double v[])
+{
+    double m =0;
+    for(int i=0; i<10; i++)
+    {
+        m=m+v[i];
+    }
+    return m/10;
+}
+
 
 int main()
 {
+
+    struct timeval start, stop;
+    double sec=0;
 
     time_t t1;
     time_t t2;
@@ -233,32 +312,50 @@ int main()
     int n = sizeof(arr)/sizeof(arr[0]);
 
     //swap(&arr[5],&arr[77]);  //TROCA APENAS 2 ELEMENTOS DA LISTA
-    randomize (arr, n);         // EMBARALHA TUDO
 
     //imprime(arr, n);
 
-    t1= time(NULL);
+    //t1= time(NULL);
 
+    int cont = 0;
+    double hoare[100];
+    double lomuto[100];
+    double med3[100];
+    double raul[100];
+    while(cont <100)
+    {
+        randomize (arr, n);         // EMBARALHA TUDO
 
-    Hoare(arr,n-1);
-    randomize (arr, n);
-    Lomuto(arr,n-1);
-    randomize (arr, n);
-    MedianaDe3(arr,n-1);
+        gettimeofday(&start,NULL);
+        Hoare(arr,n-1);
+        gettimeofday(&stop,NULL);
 
-    printf("Sorted array: ");
-    printf("\n");
-    imprime(arr, n);
+        hoare[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
 
-    fi=clock();
-    t2= time(NULL);
+        randomize (arr, n);         // EMBARALHA TUDO
 
-    double time_taken = (fi - in) / (CLOCKS_PER_SEC);
+        gettimeofday(&start,NULL);
+        Lomuto(arr,n-1);
+        gettimeofday(&stop,NULL);
 
-    float tempo = difftime(t2,t1);
+        lomuto[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
 
+        randomize (arr, n);         // EMBARALHA TUDO
 
-    printf("\n");
-    printf("Tempo: %f s\n",time_taken);
+        gettimeofday(&start,NULL);
+        MedianaDe3(arr,n-1);
+        gettimeofday(&stop,NULL);
+
+        med3[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+        cont++;
+
+    }
+
+    printf("Hoare: %f s\n",media(hoare));
+    printf("Lomuto: %f s\n",media(lomuto));
+    printf("Med 3: %f s\n",media(med3));
+    //printf("Raul: %f s\n",media(raul));
+
     return 0;
 }
