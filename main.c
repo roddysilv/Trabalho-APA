@@ -3,7 +3,74 @@
 #include <time.h>
 #include <sys/time.h>
 
-#define N 100000  ///500000 MAX
+#define N 100  ///500000 MAX
+#define M 10
+
+///========================================
+
+/* This function is same in both iterative and recursive*/
+int partition(int arr[], int l, int h)
+{
+    int x = arr[h];
+    int i = (l - 1);
+
+    for (int j = l; j <= h - 1; j++)
+    {
+        if (arr[j] <= x)
+        {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[h]);
+    return (i + 1);
+}
+
+/* A[] --> Array to be sorted,
+l --> Starting index,
+h --> Ending index */
+void quickSortIterative(int arr[], int l, int h)
+{
+    // Create an auxiliary stack
+    int stack[h - l + 1];
+
+    // initialize top of stack
+    int top = -1;
+
+    // push initial values of l and h to stack
+    stack[++top] = l;
+    stack[++top] = h;
+
+    // Keep popping from stack while is not empty
+    while (top >= 0)
+    {
+        // Pop h and l
+        h = stack[top--];
+        l = stack[top--];
+
+        // Set pivot element at its correct position
+        // in sorted array
+        int p = partition(arr, l, h);
+
+        // If there are elements on left side of pivot,
+        // then push left side to stack
+        if (p - 1 > l)
+        {
+            stack[++top] = l;
+            stack[++top] = p - 1;
+        }
+
+        // If there are elements on right side of pivot,
+        // then push right side to stack
+        if (p + 1 < h)
+        {
+            stack[++top] = p + 1;
+            stack[++top] = h;
+        }
+    }
+}
+
+///======================================
 
 /// ESQUEMA DO PROF
 
@@ -38,6 +105,7 @@ int particaoRaul(int n1,int n2,int pivo,int lista[])
     int dir=n2;
     while(esq<=dir)
     {
+
         swap(&lista[esq],&lista[dir]);
         while(lista[esq]<=pivo)
         {
@@ -47,6 +115,12 @@ int particaoRaul(int n1,int n2,int pivo,int lista[])
                 dir=dir-1;
             }
         }
+        if(lista[esq]>pivo && lista[dir]>pivo)
+        {
+            //esq=esq+1;
+            dir=dir-1;
+        }
+
     }
     return dir;
 }
@@ -265,44 +339,42 @@ void imprime(int arr[], int size)
 
 void randomize ( int arr[], int n )
 {
-    // Use a different seed value so that we don't get same
-    // result each time we run this program
-    srand ( time(NULL) );
-
-    // Start from the last element and swap one by one. We don't
-    // need to run for the first element that's why i > 0
+    srand ( time(NULL));
     for (int i = n-1; i > 0; i--)
     {
-        // Pick a random index from 0 to i
         int j = rand() % (i+1);
-
-        // Swap arr[i] with the element at random index
         swap(&arr[i], &arr[j]);
+    }
+}
+
+void troca(int v[],int tam, int t)
+{
+    srand ( time(NULL));
+    int aux = tam*(t/100);
+    int a,b;
+    for (int i = 0; i <aux; i++)
+    {
+        a= rand() % (tam+1);
+        b= rand() % (tam+1);
+        swap(&v[a], &v[b]);
     }
 }
 
 double media(double v[])
 {
     double m =0;
-    for(int i=0; i<10; i++)
+    for(int i=0; i<M; i++)
     {
         m=m+v[i];
     }
-    return m/10;
+    return m/M;
 }
 
 
 int main()
 {
 
-    struct timeval start, stop;
-    double sec=0;
-
-    time_t t1;
-    time_t t2;
-
-    clock_t in,fi;
-    in=clock();
+    struct timeval start, stop,t1,t2;
 
     int arr[N];
     for(int i = 0; i<N; i++)
@@ -311,51 +383,212 @@ int main()
     }
     int n = sizeof(arr)/sizeof(arr[0]);
 
-    //swap(&arr[5],&arr[77]);  //TROCA APENAS 2 ELEMENTOS DA LISTA
 
-    //imprime(arr, n);
+    double hoare[M];
+    double lomuto[M];
+    double med3[M];
+    double raul[M];
+    double ite[M];
+    double teste[M];
 
-    //t1= time(NULL);
+    int in,cont;
 
-    int cont = 0;
-    double hoare[100];
-    double lomuto[100];
-    double med3[100];
-    double raul[100];
-    while(cont <100)
+    printf("Menu \n 1 - Uma Troca \n 2 - Parcialmente Embaralhado \n 3 - Vetor Totalmente Embaralhado \n 0 - Sair\n\n");
+
+
+    printf("Opcao: ");
+    scanf("%d",&in);
+    while(in!=0)
     {
-        randomize (arr, n);         // EMBARALHA TUDO
+        switch(in)
+        {
+        case 1:
+            cont=0;
+            srand ( time(NULL) );
+            int i,j;
+            while(cont<M)
+            {
+                i = rand() % (n+1);
+                j = rand() % (n+1);
 
-        gettimeofday(&start,NULL);
-        Hoare(arr,n-1);
-        gettimeofday(&stop,NULL);
 
-        hoare[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+                swap(&arr[i],&arr[j]);
 
-        randomize (arr, n);         // EMBARALHA TUDO
+                gettimeofday(&start,NULL);
+                Hoare(arr,n-1);
+                gettimeofday(&stop,NULL);
 
-        gettimeofday(&start,NULL);
-        Lomuto(arr,n-1);
-        gettimeofday(&stop,NULL);
+                hoare[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
 
-        lomuto[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+                swap(&arr[i],&arr[j]);
 
-        randomize (arr, n);         // EMBARALHA TUDO
+                gettimeofday(&start,NULL);
+                Lomuto(arr,n-1);
+                gettimeofday(&stop,NULL);
 
-        gettimeofday(&start,NULL);
-        MedianaDe3(arr,n-1);
-        gettimeofday(&stop,NULL);
+                lomuto[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
 
-        med3[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+                swap(&arr[i],&arr[j]);
 
-        cont++;
+                gettimeofday(&start,NULL);
+                MedianaDe3(arr,n-1);
+                gettimeofday(&stop,NULL);
 
+                med3[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                swap(&arr[i],&arr[j]);
+
+                gettimeofday(&start,NULL);
+                quicksortRaul(arr,0,n-1);
+                gettimeofday(&stop,NULL);
+
+                raul[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                swap(&arr[i],&arr[j]);
+
+                gettimeofday(&start,NULL);
+                quickSortIterative(arr,0,n-1);
+                gettimeofday(&stop,NULL);
+
+                ite[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                cont++;
+            }
+
+            printf("\n");
+
+            printf("Hoare: %f s\n",media(hoare));
+            printf("Lomuto: %f s\n",media(lomuto));
+            printf("Med 3: %f s\n",media(med3));
+            printf("Raul: %f s\n",media(raul));
+            printf("iterativo: %f s\n",media(ite));
+            break;
+        case 2:
+            cont=0;
+            int e;
+            printf("Entre com a Porcentagem de Embaralhamento: ");
+            scanf("%d",&e);
+            printf("Vetor %d%% embaralhado \n",e);
+            while(cont <M)
+            {
+                troca(arr,n-1,e);
+
+                gettimeofday(&start,NULL);
+                Hoare(arr,n-1);
+                gettimeofday(&stop,NULL);
+
+                hoare[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                troca(arr,n-1,e);
+
+                gettimeofday(&start,NULL);
+                Lomuto(arr,n-1);
+                gettimeofday(&stop,NULL);
+
+                lomuto[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                troca(arr,n-1,e);
+
+                gettimeofday(&start,NULL);
+                MedianaDe3(arr,n-1);
+                gettimeofday(&stop,NULL);
+
+                med3[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                troca(arr,n-1,e);
+
+                gettimeofday(&start,NULL);
+                quicksortRaul(arr,0,n-1);
+                gettimeofday(&stop,NULL);
+
+                raul[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                troca(arr,n-1,e);
+
+                gettimeofday(&start,NULL);
+                quickSortIterative(arr,0,n-1);
+                gettimeofday(&stop,NULL);
+
+                ite[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                cont++;
+
+            }
+
+            printf("\n");
+
+            printf("Hoare: %f s\n",media(hoare));
+            printf("Lomuto: %f s\n",media(lomuto));
+            printf("Med 3: %f s\n",media(med3));
+            printf("Raul: %f s\n",media(raul));
+            printf("iterativo: %f s\n",media(ite));
+            break;
+        case 3:
+            cont=0;
+            while(cont <M)
+            {
+                randomize (arr, n);         // EMBARALHA TUDO
+
+                gettimeofday(&start,NULL);
+                Hoare(arr,n-1);
+                gettimeofday(&stop,NULL);
+
+                hoare[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                randomize (arr, n);         // EMBARALHA TUDO
+
+                gettimeofday(&start,NULL);
+                Lomuto(arr,n-1);
+                gettimeofday(&stop,NULL);
+
+                lomuto[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                randomize (arr, n);         // EMBARALHA TUDO
+
+                gettimeofday(&start,NULL);
+                MedianaDe3(arr,n-1);
+                gettimeofday(&stop,NULL);
+
+                med3[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                randomize (arr, n);         // EMBARALHA TUDO
+
+                gettimeofday(&start,NULL);
+                quicksortRaul(arr,0,n-1);
+                gettimeofday(&stop,NULL);
+
+                raul[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                randomize (arr, n);         // EMBARALHA TUDO
+
+                gettimeofday(&start,NULL);
+                quickSortIterative(arr,0,n-1);
+                gettimeofday(&stop,NULL);
+
+                ite[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
+
+                cont++;
+
+            }
+
+            printf("\n");
+
+            printf("Hoare: %f s\n",media(hoare));
+            printf("Lomuto: %f s\n",media(lomuto));
+            printf("Med 3: %f s\n",media(med3));
+            printf("Raul: %f s\n",media(raul));
+            printf("iterativo: %f s\n",media(ite));
+            break;
+        default:
+            printf("COMANDO INVALIDO!\n\n");
+            break;
+
+        }
+
+        printf("\n");
+        printf("Opcao: ");
+        scanf("%d",&in);
     }
-
-    printf("Hoare: %f s\n",media(hoare));
-    printf("Lomuto: %f s\n",media(lomuto));
-    printf("Med 3: %f s\n",media(med3));
-    //printf("Raul: %f s\n",media(raul));
 
     return 0;
 }
