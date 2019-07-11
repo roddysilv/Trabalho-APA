@@ -1,5 +1,17 @@
 # depslib dependency file v1.0
-1561652846 source:c:\users\rodrigo\desktop\apa\main.c
+1561654773 source:c:\users\rodrigo\desktop\apa\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<sys/time.h>
+
+1562849125 source:d:\arquivos\engenharia\faculdade\análise de projetos de algorítmos\trabalho\c\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<sys/time.h>
+
+1562869522 source:c:\users\rodrigo oliveira\google drive (rodrigo.oliveira2017@engenharia.ufjf.br)\faculdade\análise de projetos de algorítmos\trabalho\c\main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
