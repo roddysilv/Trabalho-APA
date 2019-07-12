@@ -5,7 +5,7 @@
 	<time.h>
 	<sys/time.h>
 
-1562888947 source:d:\arquivos\engenharia\faculdade\análise de projetos de algorítmos\trabalho\apa-2\main.c
+1562900546 source:d:\arquivos\engenharia\faculdade\análise de projetos de algorítmos\trabalho\apa-2\main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -50,6 +50,34 @@
 
 1562888803 source:d:\arquivos\engenharia\faculdade\análise de projetos de algorítmos\trabalho\apa-2\util.c
 	"util.h"
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<sys/time.h>
+
+1562888947 source:c:\users\rodrigo oliveira\google drive (rodrigo.oliveira2017@engenharia.ufjf.br)\faculdade\análise de projetos de algorítmos\trabalho\apa-2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<sys/time.h>
+	"hoare.h"
+	"lomuto.h"
+	"iterativo.h"
+	"raul.h"
+	"mediana3.h"
+	"util.h"
+
+1562887503 c:\users\rodrigo oliveira\google drive (rodrigo.oliveira2017@engenharia.ufjf.br)\faculdade\análise de projetos de algorítmos\trabalho\apa-2\hoare.h
+
+1562887503 c:\users\rodrigo oliveira\google drive (rodrigo.oliveira2017@engenharia.ufjf.br)\faculdade\análise de projetos de algorítmos\trabalho\apa-2\lomuto.h
+
+1562887503 c:\users\rodrigo oliveira\google drive (rodrigo.oliveira2017@engenharia.ufjf.br)\faculdade\análise de projetos de algorítmos\trabalho\apa-2\iterativo.h
+
+1562887503 c:\users\rodrigo oliveira\google drive (rodrigo.oliveira2017@engenharia.ufjf.br)\faculdade\análise de projetos de algorítmos\trabalho\apa-2\raul.h
+
+1562887503 c:\users\rodrigo oliveira\google drive (rodrigo.oliveira2017@engenharia.ufjf.br)\faculdade\análise de projetos de algorítmos\trabalho\apa-2\mediana3.h
+
+1562887619 c:\users\rodrigo oliveira\google drive (rodrigo.oliveira2017@engenharia.ufjf.br)\faculdade\análise de projetos de algorítmos\trabalho\apa-2\util.h
 	<stdio.h>
 	<stdlib.h>
 	<time.h>

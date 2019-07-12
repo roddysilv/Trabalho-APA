@@ -153,8 +153,8 @@ int main()
         gettimeofday(&stop,NULL);
 
         hoare[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
-/*
-        swap(&vet[i],&vet[j]);
+
+        troca(vet,n,t);
 
         gettimeofday(&start,NULL);
         Lomuto(vet,n-1);
@@ -162,7 +162,7 @@ int main()
 
         lomuto[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
 
-        swap(&vet[i],&vet[j]);
+        troca(vet,n,t);
 
         gettimeofday(&start,NULL);
         MedianaDe3(vet,n-1);
@@ -170,7 +170,7 @@ int main()
 
         med3[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
 
-        swap(&vet[i],&vet[j]);
+        troca(vet,n,t);
 
         gettimeofday(&start,NULL);
         quicksortRaul(vet,0,n-1);
@@ -178,19 +178,19 @@ int main()
 
         raul[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
 
-        swap(&vet[i],&vet[j]);
+        troca(vet,n,t);
 
         gettimeofday(&start,NULL);
         quickSortIterative(vet,0,n-1);
         gettimeofday(&stop,NULL);
 
         ite[cont]=(double)(stop.tv_usec - start.tv_usec)/1000000+(double)(stop.tv_sec-start.tv_sec);
-*/
+
         cont++;
     }
 
     printf("\n");
-    printf("N TROCAS: \n");
+    printf("%d TROCAS: \n",t);
     printf("Hoare: %f s\n",media(hoare,M));
     printf("Lomuto: %f s\n",media(lomuto,M));
     printf("Med 3: %f s\n",media(med3,M));
