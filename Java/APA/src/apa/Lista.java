@@ -35,7 +35,7 @@ public class Lista {
                 Collections.swap(lista, aux, aux + 1);
                 break;
             case 3: // UMA TROCA - TROCA UMA POSICAO COM OUTRA ALEATORIA
-                Collections.swap(lista, r.nextInt(lista.size() - 2), r.nextInt(lista.size() - 2));
+                Collections.swap(lista, r.nextInt(lista.size() - 1), r.nextInt(lista.size() - 1));
                 break;
             case 4: //N TROCAS
                 for(int i=0;i<n;i++){

@@ -19,34 +19,79 @@ public class APA {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int tam = 50000;
+        int tam = 5000;
         Lista l = new Lista(tam);
-        //l.imprime();
-   
-        l.shuffle(1,20);
-        //l.imprime();
-     
+        int nivelOrdenacao = 3;
+        int quantTrocas = 1000;
+
+        int execucoes = 10;
+
+        long tH[] = new long[execucoes];
+        long tL[] = new long[execucoes];
+        long tMed3[] = new long[execucoes];
+        long tI[] = new long[execucoes];
+        long tR[] = new long[execucoes];
+
         Lomuto lo = new Lomuto();
         Hoare h = new Hoare();
-        MedianaDe3 m3= new MedianaDe3();
+        MedianaDe3 m3 = new MedianaDe3();
         Iterativo ite = new Iterativo();
         Raul r = new Raul();
-        
-        Instant inicio = Instant.now();
-        
-        h.Hoare(l.lista);
-        Instant fim = Instant.now();
-        //m3.MedianaDe3(l.lista);
-        //lo.Lomuto(l.lista);
-        //ite.Iterativo(l.lista);
-        //r.quickRaul(l.lista);
-        //l.imprime();
-        long tempo = Duration.between(inicio, fim).toNanos();
-        System.out.println(tempo + " ns");
-        //for (int i = 0; i < arr.size(); i++) {
-        //    System.out.print(arr.get(i) + " ");
-        //}
-        //System.out.println("teste: " + arr.size());
+
+        for (int i = 0; i < execucoes; i++) {
+            l.shuffle(nivelOrdenacao, quantTrocas);
+
+            Instant inicio = Instant.now();
+            h.Hoare(l.lista);
+            Instant fim = Instant.now();
+            tH[i] = Duration.between(inicio, fim).toNanos();
+
+            l.shuffle(nivelOrdenacao, quantTrocas);
+
+            inicio = Instant.now();
+            m3.MedianaDe3(l.lista);
+            fim = Instant.now();
+            tMed3[i] = Duration.between(inicio, fim).toNanos();
+
+            l.shuffle(nivelOrdenacao, quantTrocas);
+
+            inicio = Instant.now();
+            lo.Lomuto(l.lista);
+            fim = Instant.now();
+            tL[i] = Duration.between(inicio, fim).toNanos();
+
+            l.shuffle(nivelOrdenacao, quantTrocas);
+
+            inicio = Instant.now();
+            ite.Iterativo(l.lista);
+            fim = Instant.now();
+            tI[i] = Duration.between(inicio, fim).toNanos();
+
+            l.shuffle(nivelOrdenacao, quantTrocas);
+
+            inicio = Instant.now();
+            r.quickRaul(l.lista);
+            fim = Instant.now();
+            tR[i] = Duration.between(inicio, fim).toNanos();
+        }
+
+        long L, H, R, I, MED3;
+        L = H = R = I = MED3 = 0;
+        for (int i = 0; i < execucoes; i++) {
+            L = L + tL[i];
+            H = H + tH[i];
+            I = I + tI[i];
+            MED3 = MED3 + tMed3[i];
+            R = R + tR[i];
+        }
+
+        System.out.println("Tempo:");
+        System.out.println("Hoare: " + H / execucoes + " ns");
+        System.out.println("Lomuto: " + L / execucoes + " ns");
+        System.out.println("Med 3: " + MED3 / execucoes + " ns");
+        System.out.println("Iterativo: " + I / execucoes + " ns");
+        System.out.println("Raul: " + R / execucoes + " ns");
+
     }
 
 }
