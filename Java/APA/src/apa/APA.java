@@ -7,7 +7,6 @@ package apa;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 
 /**
  *
@@ -19,12 +18,12 @@ public class APA {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int tam = 5000;
+        int tam = 10000;
         Lista l = new Lista(tam);
-        int nivelOrdenacao = 3;
-        int quantTrocas = 1000;
+        int nivelOrdenacao = 2;
+        int quantTrocas = 2;
 
-        int execucoes = 10;
+        int execucoes = 500;
 
         long tH[] = new long[execucoes];
         long tL[] = new long[execucoes];
@@ -37,10 +36,10 @@ public class APA {
         MedianaDe3 m3 = new MedianaDe3();
         Iterativo ite = new Iterativo();
         Raul r = new Raul();
-
+        
         for (int i = 0; i < execucoes; i++) {
             l.shuffle(nivelOrdenacao, quantTrocas);
-
+            
             Instant inicio = Instant.now();
             h.Hoare(l.lista);
             Instant fim = Instant.now();
@@ -63,7 +62,7 @@ public class APA {
             l.shuffle(nivelOrdenacao, quantTrocas);
 
             inicio = Instant.now();
-            ite.Iterativo(l.lista);
+            ite.qIterativo(l.lista);
             fim = Instant.now();
             tI[i] = Duration.between(inicio, fim).toNanos();
 
@@ -91,7 +90,5 @@ public class APA {
         System.out.println("Med 3: " + MED3 / execucoes + " ns");
         System.out.println("Iterativo: " + I / execucoes + " ns");
         System.out.println("Raul: " + R / execucoes + " ns");
-
     }
-
 }

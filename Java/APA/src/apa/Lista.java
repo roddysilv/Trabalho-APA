@@ -42,16 +42,18 @@ public class Lista {
                     Collections.swap(lista, r.nextInt(lista.size() - 2), r.nextInt(lista.size() - 2));
                 }
                 break;
+            case 5:
+                int x=this.lista.size()-1;
+                this.lista.clear();
+                for(int i=0;i<x+1;i++){
+                    this.lista.add(x-i);
+                }
+                break;
             default:
                 break;
         }
     }
 
-    public void umaTroca(){
-        int tam = this.lista.size()/2;
-        Collections.swap(lista, tam, tam+1);
-    }
-    
     public void imprime() {
         for (int i = 0; i < this.lista.size(); i++) {
             System.out.print(this.lista.get(i) + " ");

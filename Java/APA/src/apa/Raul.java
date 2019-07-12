@@ -43,7 +43,12 @@ public class Raul {
                     dir = dir - 1;
                 }
             }
+            if (lista.get(esq) > pivo && lista.get(dir) > pivo) {
+                esq = esq + 1;
+                dir = dir - 1;
+            }
         }
+
         return dir;
     }
 
@@ -52,13 +57,13 @@ public class Raul {
         int dir = n2;
         int pto = achaPivo(esq, dir, lista);
         if (pto != 0) {
-            int p = particao(esq, dir, pto, lista);
+            int p = particao(esq, dir, lista.get(pto), lista);
             quicksort(lista, esq, p);
             quicksort(lista, p + 1, dir);
         }
     }
 
-     public void quickRaul(ArrayList<Integer> lista) {
-        quicksort(lista, 0, lista.size()-1);
+    public void quickRaul(ArrayList<Integer> lista) {
+        quicksort(lista, 0, lista.size() - 1);
     }
 }

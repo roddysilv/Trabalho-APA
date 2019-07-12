@@ -7,6 +7,7 @@ package apa;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 
 /**
  *
@@ -14,61 +15,49 @@ import java.util.Collections;
  */
 public class Iterativo {
 
-    private int partiticao(ArrayList<Integer> lista, int inicio, int fim) {
-        int x = lista.get(fim);
-        int i = (inicio - 1);
-
-        for (int j = inicio; j <= fim - 1; j++) {
-            if (lista.get(j) <= x) {
-                i++;
-                Collections.swap(lista, i, j);
+    public  void qIterativo(ArrayList<Integer> arr) {
+        Stack<Integer> pilha = new Stack<Integer>();
+        pilha.push(0);
+        pilha.push(arr.size());
+        while (!pilha.isEmpty()) {
+            int fim = pilha.pop();
+            int inicio = pilha.pop();
+            if (fim - inicio < 2) {
+                continue;
             }
-        }
-        Collections.swap(lista, i + 1, fim);
-        return (i + 1);
-    }
+            int p = inicio + ((fim - inicio) / 2);
+            p = particao(arr, p, inicio, fim);
 
-    /* A[] --> Array to be sorted,
-l --> Starting index,
-h --> Ending index */
-    private void quickSortIterativo(ArrayList<Integer> lista, int inicio, int fim) {
-        // Create an auxiliary stack
-        int pilha[] = new int[fim - inicio + 1];
+            pilha.push(p + 1);
+            pilha.push(fim);
 
-        // initialize top of stack
-        int top = -1;
+            pilha.push(inicio);
+            pilha.push(p);
 
-        // push initial values of l and h to stack
-        pilha[++top] = inicio;
-        pilha[++top] = fim;
-
-        // Keep popping from stack while is not empty
-        while (top >= 0) {
-            // Pop h and l
-            fim = pilha[top--];
-            fim = pilha[top--];
-
-            // Set pivot element at its correct position
-            // in sorted array
-            int p = partiticao(lista, inicio, fim);
-
-            // If there are elements on left side of pivot,
-            // then push left side to stack
-            if (p - 1 > fim) {
-                pilha[++top] = inicio;
-                pilha[++top] = p - 1;
-            }
-
-            // If there are elements on right side of pivot,
-            // then push right side to stack
-            if (p + 1 < fim) {
-                pilha[++top] = p + 1;
-                pilha[++top] = fim;
-            }
         }
     }
 
-    public void Iterativo(ArrayList<Integer> lista) {
-        quickSortIterativo(lista, 0, lista.size());
+    private int particao(ArrayList<Integer> arr, int p, int inicio, int fim) {
+        int l = inicio;
+        int h = fim - 2;
+        int pivo = arr.get(p);
+     
+        Collections.swap(arr, p, fim - 1);
+
+        while (l < h) {
+            if (arr.get(l) < pivo) {
+                l++;
+            } else if (arr.get(h) >= pivo) {
+                h--;
+            } else {
+                Collections.swap(arr, l, h);
+            }
+        }
+        int index = h;
+        if (arr.get(h) < pivo) {
+            index++;
+        }
+        Collections.swap(arr, fim - 1, index);
+        return index;
     }
 }
